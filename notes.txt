@@ -1,0 +1,96 @@
+To check packages installed
+    pip list
+
+To make a virtual environment
+    python -m venv venv
+
+To activate virtual environment
+    venv\Scripts\activate
+
+To deactivate virtual environment
+    deactivate
+
+Install Flask package
+    pip install Flask
+
+To run the server. Use app because the module name is called "app.py"
+    flask --app app run
+
+To check all the routes under app
+    flask --app hello routes
+
+To activate the debug mode
+    flask --app app --debug run
+
+BUT if the file is named app.py or wsgi.py, you don't have to use --app every time you run the server.
+    flask --debug run
+
+Create a .gitignore file
+    .gitignore
+
+To install all packages in the requirements.txt file
+    pip install -r requirements.txt
+
+To install Faker package
+    pip install faker
+
+To install Flask-WTF
+    pip install -U Flask-WTF
+
+To install Flask SQLAlchemy package
+    pip install -U Flask-SQLAlchemy
+
+Class to define models
+    db.models
+
+to execute queries
+    db.session
+
+Flask-Migrate
+    extension that handles SQLAlchemy database migrations for Flask applications using Alembic.
+
+python-dotenv
+    Read key-value pairs from a.env file and set them as environment variables
+
+To install python-dotenv
+    pip install -U python-dotenv
+
+Flask Migrate  
+    an extension that handles SQLAlchemy database migrations for Flask applications using Alembic. The database operations are made available through the Flask command line interface.
+
+To install Flask-Migrate
+    pip install Flask-Migrate
+    it installs Mako and Alembic 
+
+To create a new migrations repository, this creates the whole migrations folder
+    flask db init
+
+To generate an initial migration and pull from models.py (equivalent to "git commit -m ")
+    flask db migrate -m "Initial migration"
+    when ran, creates a new script. It will initialize the database that was just created
+    It will create a new database that is called app.db
+
+Runs the function and creates the table (database). (equivalent to "git push")
+    flask db upgrade
+
+Deletes the last migration, the last table created.
+    flask db downgrade
+
+To insert data, pass the model object to db.session.add()
+    db.session.add(user)
+    db.session.commit()
+
+To create a user in command line
+    user1 = User(first_name = "Jose", last_name="Laurito", email ="jlaurito21@cd.com", password = "password123K", username = "jlaurito21")
+
+To change/update username
+    user1.username = "new_username"
+    db.session.commit()
+
+Returns a list of all the users repr
+    db.session.execute(db.select(User)).scalars().all()
+
+Returns a list of the repr of the user than has the username "jlaurito"
+    User.query.filter_by(username = "jlaurito").all()
+        or
+    db.session.execute(db.select(User).filterby(username = "jlaurito")).scalars().all()
