@@ -3,21 +3,20 @@
 from app import app, db
 from flask import render_template, redirect, url_for, flash
 from fake_data import posts
-from app.forms import SignUpForm, LoginForm
+from app.forms import SignUpForm, LoginForm, PostForm
 # Import user model from app.models
 from app.models import User
-
+from flask_login import login_user, logout_user, login_required
 
 # Use route() decorator to tell Flask what URL should trigger our function
 @app.route("/")
 def index():
     # return the html template you want to render
-    return render_template("index.html", posts=posts, logged_in = True)
+    return render_template("index.html", posts=posts)
 
 
 
-
-@app.route("/signup", methods = ["GET", "POST"])
+@app.route('/signup', methods=["GET", "POST"])
 def signup():
     # form is an instance of the SignUpForm class. Create an instance of the form (in the context of the current request)
     form = SignUpForm()
@@ -54,8 +53,6 @@ def signup():
 
 
 
-
-
 # Set up methods for post and get to make the submit button work
 @app.route('/login', methods = ["GET", "POST"])
 def login():
@@ -66,11 +63,16 @@ def login():
         password = form.password.data
         print(username, password)
         print('Hooray our form is validated!!!')
-        #  TODO: Check if the username and password are valid
+        # Check if the username and password are valid
         user = User.query.filter_by(username=username).first()
         # if user is not None, meaning we get back a user and when we call the check_password method, with the password we get back from the form:
         # If both comes back as True, run this code.
         if user is not None and user.check_password(password):
+            # If the user exists and has the correct password, log them in
+            # Import login_user from flask_login  
+            # Call the login_user function
+            # You can now access the logged-in user with the current_user proxy which will be available in every template
+            login_user(user)
             flash(f'You have successfully logged in as {username}','success')
             return redirect(url_for('index'))
         else:
@@ -79,3 +81,20 @@ def login():
 
     # Send the instance of LoginForm as form to the template, login.html
     return render_template("login.html", form=form)
+
+
+@app.route('/logout')
+def logout():
+    # Runs the function that logs the user out
+    logout_user()
+    flash('You have successfully logged out', 'info')
+    return redirect(url_for('index'))
+
+@app.route('/create')
+# login_required tells Flask that the user must be logged in to access this route, otherwise it will redirect to the login page or throw a 401 error
+@login_required
+def create_post():
+    # Create an instance of the PostForm class as form
+    form = PostForm()
+    # Use form as context to render the template, create.html
+    return render_template("create.html", form=form)

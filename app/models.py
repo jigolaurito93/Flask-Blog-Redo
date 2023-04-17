@@ -1,15 +1,16 @@
 # Create a new python file for the database
 # db is where we get our models from
-# db is the instance of SQLAlchemy
-from app import db
+# db is the instance of SQLAlchemy, login is the instance of LoginManager 
+from app import db, login
 # Import datetime from datetime module, so that we can use it as a column.
 from datetime import datetime
 # generate_password_hash is a function that generates a multicode hash of a password
 #  check_password_hash is a function that checks a password against a multicode hash
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import UserMixin
 
 # Define a class , which will inherit from db.Model
-class User(db.Model):
+class User(db.Model, UserMixin):
     # This will auto-increment the primary key
     # Primary key defaults to false
     # Primary key, when true, sets the column and the primary key
@@ -44,3 +45,6 @@ class User(db.Model):
     def check_password(self, password_guess):
         return check_password_hash(self.password, password_guess)
 
+@login.user_loader
+def get_a_user_by_id(user_id):
+    return db.session.get(User, user_id)

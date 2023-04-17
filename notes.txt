@@ -94,3 +94,6 @@ Returns a list of the repr of the user than has the username "jlaurito"
     User.query.filter_by(username = "jlaurito").all()
         or
     db.session.execute(db.select(User).filterby(username = "jlaurito")).scalars().all()
+
+To install Flask Log in package
+    pip install flask-login 

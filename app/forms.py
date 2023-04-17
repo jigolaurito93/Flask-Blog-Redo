@@ -1,7 +1,7 @@
 # forms.py is a file that contains all of the forms used in the application.
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, EmailField
+from wtforms import StringField, PasswordField, SubmitField, EmailField, TextAreaField
 from wtforms.validators import DataRequired, EqualTo
 
 # SignUpForm inherits from FlaskForm class
@@ -21,3 +21,12 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Log in')
     # remember = BooleanField('Remember Me')
+
+# Create a class that creates a post form
+class PostForm(FlaskForm):
+    title = StringField('Title', validators=[DataRequired()])
+    # TextareaField is a form field that can accept multiline text.
+    body = TextAreaField('Body', validators=[DataRequired()])
+    image_url = StringField('Image URL')
+    submit = SubmitField(' Create Post')
+
